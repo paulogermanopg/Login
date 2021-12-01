@@ -1,112 +1,100 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
 
-import React from 'react';
-import type {Node} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import React from 'react'
+import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Image, TouchableOpacity, Dimensions } from 'react-native'
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-const Section = ({children, title}): Node => {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-};
-
-const App: () => Node = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+export default function App(){
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};
+    <KeyboardAvoidingView style={styles.container}>
+
+      <View style={styles.containerImageLogo}>
+        <Image source={require('./assets/logo.png')} style={styles.imageLogo} />
+      </View>
+
+      <View style={styles.containerDados}>
+        <TextInput 
+          placeholder='E-mail'
+          autoCorrect={false}
+          onChangeText={() => {}}
+          style={styles.input}
+        />
+
+        <TextInput 
+          placeholder='Senha'
+          autoCorrect={false}
+          onChangeText={() => {}}
+          style={styles.input}
+        />
+
+        <TouchableOpacity style={styles.botaoLogin}>
+          <Text style={styles.loginText}>
+            Faça Login!
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.botaoRegistrar}>
+          <Text style={styles.registrarText}>
+            Seja Loginner!
+          </Text>
+        </TouchableOpacity>
+
+      </View>
+
+    </KeyboardAvoidingView>
+  )
+}
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex:1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#24425c'
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  containerImageLogo: {
+    flex: 1,
+    justifyContent: 'center'
   },
-  sectionDescription: {
-    marginTop: 8,
+  imageLogo: {
+    width: Dimensions.get('window').width * 0.5,
+    height: Dimensions.get('window').width *0.5,
+    alignItems: 'center',
+    alignSelf: 'center',
+    resizeMode: 'contain',
+  },
+  containerDados: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+    paddingBottom: 30
+  },
+  input: {
+    backgroundColor: '#fff',
+    width: '90%',
+    marginBottom: 15,
+    color: '#222',
+    fontSize: 16,
+    borderRadius: 10,
+    padding: 10
+  },
+  botaoLogin: {
+    backgroundColor: '#789ac7',
+    width: '90%',
+    height: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10
+  },
+  botaoRegistrar: {
+    marginTop: 10
+  },
+  loginText: {
+    color: '#fff',
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: 'bold'
   },
-  highlight: {
-    fontWeight: '700',
-  },
-});
-
-export default App;
+  registrarText: {
+    color: '#fff'
+  }
+})
