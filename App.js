@@ -1,17 +1,93 @@
 
-import React from 'react'
-import { StyleSheet, Text, TextInput, View, KeyboardAvoidingView, Image, TouchableOpacity, Dimensions } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { 
+  StyleSheet, Text, TextInput, 
+  View, KeyboardAvoidingView, 
+  Image, TouchableOpacity, Dimensions, 
+  Animated, Keyboard
+} from 'react-native'
 
 export default function App(){
+
+  const [offset] = useState(new Animated.ValueXY({ x: 0, y: 90 }))
+  const [opacity] = useState(new Animated.Value(0))
+  const [logo] = useState(new Animated.ValueXY({ 
+    x: Dimensions.get('window').width * 0.5, 
+    y: Dimensions.get('window').width * 0.5 }))
+
+  useEffect(() => {
+    keyboardDidShowListener =  Keyboard.addListener('keyboardDidShow', keyboardDidShow)
+    keyboardDidHideListener =  Keyboard.addListener('keyboardDidHide', keyboardDidHide)
+
+    Animated.parallel([
+      
+      Animated.spring(offset.y, {
+        toValue: 0,
+        speed: 4,
+        bounciness: 15,
+      }),
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 500,
+      })
+
+    ]).start()
+
+  }, [])
+
+  function keyboardDidShow() {
+    Animated.parallel([
+      
+      Animated.timing(logo.x, {
+        toValue: Dimensions.get('window').width * 0.3,
+        duration: 100,
+      }),
+      Animated.timing(logo.y, {
+        toValue: Dimensions.get('window').width * 0.3,
+        duration: 100,
+      })
+
+    ]).start()
+  }
+
+  function keyboardDidHide() {
+    Animated.parallel([
+      
+      Animated.timing(logo.x, {
+        toValue: Dimensions.get('window').width * 0.5,
+        duration: 100,
+      }),
+      Animated.timing(logo.y, {
+        toValue: Dimensions.get('window').width * 0.5,
+        duration: 100,
+      })
+
+    ]).start()
+  }
 
   return (
     <KeyboardAvoidingView style={styles.container}>
 
       <View style={styles.containerImageLogo}>
-        <Image source={require('./assets/logo.png')} style={styles.imageLogo} />
+        <Animated.Image source={require('./assets/logo.png')} 
+          style={{
+            width: logo.x,
+            height: logo.y,
+            resizeMode: 'contain',
+          }} />
       </View>
 
-      <View style={styles.containerDados}>
+      <Animated.View 
+        style={[
+          styles.containerDados,
+          {
+            opacity: opacity,
+            transform: [
+              {translateY: offset.y}
+            ]
+          }
+        ]}
+      >
         <TextInput 
           placeholder='E-mail'
           autoCorrect={false}
@@ -38,7 +114,7 @@ export default function App(){
           </Text>
         </TouchableOpacity>
 
-      </View>
+      </Animated.View>
 
     </KeyboardAvoidingView>
   )
@@ -54,13 +130,6 @@ const styles = StyleSheet.create({
   containerImageLogo: {
     flex: 1,
     justifyContent: 'center'
-  },
-  imageLogo: {
-    width: Dimensions.get('window').width * 0.5,
-    height: Dimensions.get('window').width *0.5,
-    alignItems: 'center',
-    alignSelf: 'center',
-    resizeMode: 'contain',
   },
   containerDados: {
     flex: 1,
